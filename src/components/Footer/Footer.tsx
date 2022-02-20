@@ -36,9 +36,15 @@ const Footer = () => {
             </a>
           </div>
           <div className="socialDownload">
-            <img src={appStore} alt="instagram" />
-            <img src={playStore} alt="playStore" />
-            <img src={windowsStore} alt="windowsStore" />
+            <a href="https://www.apple.com/app-store/">
+              <img src={appStore} alt="instagram" />
+            </a>
+            <a href="https://play.google.com/store">
+              <img src={playStore} alt="instagram" />
+            </a>
+            <a href="https://www.microsoft.com/en-us/store/apps">
+              <img src={windowsStore} alt="windowsStore" />
+            </a>
           </div>
         </div>
       </div>

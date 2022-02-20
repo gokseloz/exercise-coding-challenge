@@ -63,4 +63,5 @@ nav > a:not(:last-child)::before {
 
 .socialDownload > img {
   width: 140px;
+  cursor: pointer;
 }
