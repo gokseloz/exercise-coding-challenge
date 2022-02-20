@@ -2,23 +2,30 @@
 
 This is a coding challenge I have found [here](https://github.com/pankod/frontend-challenge) and worked on it for the exercise purposes
 
-### Used technologies, tools
+## Used technologies, tools
 
 - Create React App
 - HTML, CSS, ReactJs, TypeScript, Jest, Mock Service Worker(MSW)
 
-### Data
+## Data
+- For development
+  - MSW automatically starts when the app runs
+  - Fetches data from MSW
 
-- MSW automatically starts when the app runs
-- Then fetches data from MSW in series and movies page
+- For production
+  - Get data from sample.json (src/Mocks/sample.json)
 
-### Install
+## View Demo
+- [Demo](https://gokseloz-exercise-coding-challenge.vercel.app/)
 
-After Cloning the Repo
+## Run it locally
 
-1. `npm install`
-2. `npm start`
+1. Clone the repo
+2. Install dependencies `npm install`
+3. Run it `npm start`
 
-### Responsivity
+## Responsivity
 
 - Not yet
+
+
