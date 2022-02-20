@@ -1,9 +1,9 @@
 interface ISerie {
+  title: string;
   description: string;
   images: {
-    "Poster Art": string;
+    "Poster Art": any;
   };
   programType: string;
   releaseYear: number;
-  title: string;
 }

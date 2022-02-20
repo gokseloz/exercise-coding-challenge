@@ -5,34 +5,49 @@ import Movie from "../components/Movie/Movie";
 import FormInput from "../components/FormInput/FormInput";
 import sorting from "../helpers/sorting";
 import Title from "../components/Title/Title";
+import data from "../mocks/sample.json";
 
 const Movies: React.FC<any> = () => {
   const [sortMethod, setSortMethod] = useState<string>("yearDescending");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [demandedMovies, setDemandedMovies] = useState<IMovie[]>([]);
-  const [initialMovies, setInitialMovies] = useState([]);
+  const [initialMovies, setInitialMovies] = useState<IMovie[]>([]);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
   const fetchData = async () => {
     setIsPending(true);
-    try {
-      const res = await fetch("/api/moviesSeries");
-      const moviesSeries = await res.json();
-      const first21MoviesAfter2010 = moviesSeries
+    if (process.env.NODE_ENV === "development") {
+      try {
+        const res = await fetch("/api/moviesSeries");
+        const moviesSeries = await res.json();
+        const first21MoviesAfter2010 = moviesSeries
+          .filter(
+            (serie: IMovie) =>
+              serie.title.toLocaleLowerCase().includes(searchTerm) &&
+              serie.releaseYear >= 2010 &&
+              serie.programType === "movie"
+          )
+          .slice(0, 21);
+        setInitialMovies(first21MoviesAfter2010);
+        setIsPending(false);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message);
+        setIsPending(false);
+      }
+    } else {
+      const first21MoviesAfter2010 = data
         .filter(
-          (serie: IMovie) =>
+          (serie) =>
             serie.title.toLocaleLowerCase().includes(searchTerm) &&
             serie.releaseYear >= 2010 &&
-            serie.programType === "movie"
+            serie.programType === "series"
         )
         .slice(0, 21);
       setInitialMovies(first21MoviesAfter2010);
       setIsPending(false);
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
-      setIsPending(false);
     }
   };
 

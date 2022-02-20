@@ -5,26 +5,45 @@ import Header from "../components/Header/Header";
 import Serie from "../components/Serie/Serie";
 import Title from "../components/Title/Title";
 import sorting from "../helpers/sorting";
+import data from "../mocks/sample.json";
 
 const Series = () => {
   const [sortMethod, setSortMethod] = useState<string>("yearDescending");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [demandedSeries, setDemandedSeries] = useState<ISerie[]>([]);
-  const [initialSeries, setInitialSeries] = useState([]);
+  const [initialSeries, setInitialSeries] = useState<ISerie[]>([]);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
   const fetchData = async () => {
     setIsPending(true);
-    try {
-      const res = await fetch("/api/moviesSeries");
-      if (!res.ok) {
-        throw Error("could not fetch the data for that resource");
+
+    if (process.env.NODE_ENV === "development") {
+      try {
+        const res = await fetch("/api/moviesSeries");
+        if (!res.ok) {
+          throw Error("could not fetch the data for that resource");
+        }
+        const moviesSeries = await res.json();
+        const first21SeriesAfter2010 = moviesSeries
+          .filter(
+            (serie: ISerie) =>
+              serie.title.toLocaleLowerCase().includes(searchTerm) &&
+              serie.releaseYear >= 2010 &&
+              serie.programType === "series"
+          )
+          .slice(0, 21);
+        setInitialSeries(first21SeriesAfter2010);
+        setIsPending(false);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message);
+        setIsPending(false);
       }
-      const moviesSeries = await res.json();
-      const first21SeriesAfter2010 = moviesSeries
+    } else {
+      const first21SeriesAfter2010 = data
         .filter(
-          (serie: ISerie) =>
+          (serie) =>
             serie.title.toLocaleLowerCase().includes(searchTerm) &&
             serie.releaseYear >= 2010 &&
             serie.programType === "series"
@@ -33,9 +52,6 @@ const Series = () => {
       setInitialSeries(first21SeriesAfter2010);
       setIsPending(false);
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
-      setIsPending(false);
     }
   };
 
