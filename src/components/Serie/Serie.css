@@ -1,0 +1,25 @@
+article {
+  width: 135px;
+}
+.serie-top {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+.serie-top > img {
+  width: 100%;
+}
+
+.serie-bottom {
+  font-size: 0.9rem;
+  padding-block: 0.7rem;
+}
+
+.serie-bottom > span {
+  width: 100%;
+  word-break: break-all;
+}

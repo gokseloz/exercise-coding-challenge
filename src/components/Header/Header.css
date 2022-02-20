@@ -1,0 +1,59 @@
+header {
+  color: #fff;
+  background: linear-gradient(to bottom, #0081ff, #007aff);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 1400px;
+}
+
+.header-heading .menu-link {
+  font-size: 1.7rem;
+}
+
+.header-container-top {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.header-container-top {
+  background: linear-gradient(to bottom, #0081ff, #007aff);
+  z-index: 1;
+}
+
+.header-top {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu-link {
+  font-size: 1.2rem;
+}
+
+.login {
+  display: flex;
+  gap: 2rem;
+}
+.login > button {
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.header-btn-trial {
+  background-color: #353535;
+  padding: 0.7em 1.2em;
+}
