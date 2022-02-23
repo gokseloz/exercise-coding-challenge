@@ -42,7 +42,7 @@ const Movies: React.FC<any> = () => {
           (serie) =>
             serie.title.toLocaleLowerCase().includes(searchTerm) &&
             serie.releaseYear >= 2010 &&
-            serie.programType === "series"
+            serie.programType === "movie"
         )
         .slice(0, 21);
       setInitialMovies(first21MoviesAfter2010);
