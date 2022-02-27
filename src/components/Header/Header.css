@@ -129,8 +129,13 @@ header {
     top: 0;
     transform: translateY(-100%);
     padding-block: 1rem;
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     padding-left: 2rem;
+    opacity: 0;
+  }
+  .header-menu.menuOpen {
+    transform: translateY(0);
+    opacity: 1;
   }
   .login {
     gap: 0;

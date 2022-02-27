@@ -16,10 +16,7 @@ const Header = () => {
               DEMO Streaming
             </Link>
           </h1>
-          <div
-            className="header-menu"
-            style={{ transform: `${isMenuOpen ? "translateY(0)" : ""}` }}
-          >
+          <div className={`header-menu ${isMenuOpen && "menuOpen"}`}>
             <div className="menu">
               <Link className="menu-link" to="/series">
                 Series
