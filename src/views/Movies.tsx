@@ -14,19 +14,19 @@ const Movies: React.FC<any> = () => {
   const [initialMovies, setInitialMovies] = useState<IMovie[]>([]);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   const fetchData = async () => {
     setIsPending(true);
     if (process.env.NODE_ENV === "development") {
+      console.log("abc");
       try {
         const res = await fetch("/api/moviesSeries");
         const moviesSeries = await res.json();
         const first21MoviesAfter2010 = moviesSeries
           .filter(
             (serie: IMovie) =>
-              serie.title.toLocaleLowerCase().includes(searchTerm) &&
-              serie.releaseYear >= 2010 &&
-              serie.programType === "movie"
+              serie.releaseYear >= 2010 && serie.programType === "movie"
           )
           .slice(0, 21);
         setInitialMovies(first21MoviesAfter2010);
@@ -39,10 +39,7 @@ const Movies: React.FC<any> = () => {
     } else {
       const first21MoviesAfter2010 = data
         .filter(
-          (serie) =>
-            serie.title.toLocaleLowerCase().includes(searchTerm) &&
-            serie.releaseYear >= 2010 &&
-            serie.programType === "movie"
+          (serie) => serie.releaseYear >= 2010 && serie.programType === "movie"
         )
         .slice(0, 21);
       setInitialMovies(first21MoviesAfter2010);
@@ -56,12 +53,22 @@ const Movies: React.FC<any> = () => {
   }, []);
 
   useEffect(() => {
-    const sortedAndSearchSeries = sorting(initialMovies, sortMethod).filter(
+    const sortedAndSearchMovies = sorting(initialMovies, sortMethod).filter(
       (serie: IMovie) => serie.title.toLocaleLowerCase().includes(searchTerm)
     );
-
-    setDemandedMovies(sortedAndSearchSeries);
-  }, [sortMethod, searchTerm]);
+    if (searchTerm.length > 2) {
+      if (sortedAndSearchMovies.length > 0) {
+        setIsNotFound(false);
+        setDemandedMovies(sortedAndSearchMovies);
+      } else {
+        setIsNotFound(true);
+        setDemandedMovies([]);
+      }
+    } else {
+      setIsNotFound(false);
+      setDemandedMovies(initialMovies);
+    }
+  }, [sortMethod, searchTerm, initialMovies]);
 
   return (
     <>
@@ -74,15 +81,16 @@ const Movies: React.FC<any> = () => {
             sortMethod={sortMethod}
             setSearchTerm={setSearchTerm}
           />
+          {isNotFound && (
+            <h3>{`Could not find any movie matching to ${searchTerm}`}</h3>
+          )}
 
           <div className="seriesList">
             {error && <h1>{error}</h1>}
             {isPending && <h1>Loading...</h1>}
-            {(demandedMovies.length > 0 ? demandedMovies : initialMovies).map(
-              (movie: IMovie, idx: number) => {
-                return <Movie key={idx} movie={movie} />;
-              }
-            )}
+            {demandedMovies.map((movie: ISerie, idx: number) => {
+              return <Movie key={idx} movie={movie} />;
+            })}
           </div>
         </div>
       </main>

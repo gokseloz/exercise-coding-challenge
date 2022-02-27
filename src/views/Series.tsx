@@ -14,6 +14,7 @@ const Series = () => {
   const [initialSeries, setInitialSeries] = useState<ISerie[]>([]);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   const fetchData = async () => {
     setIsPending(true);
@@ -28,9 +29,7 @@ const Series = () => {
         const first21SeriesAfter2010 = moviesSeries
           .filter(
             (serie: ISerie) =>
-              serie.title.toLocaleLowerCase().includes(searchTerm) &&
-              serie.releaseYear >= 2010 &&
-              serie.programType === "series"
+              serie.releaseYear >= 2010 && serie.programType === "series"
           )
           .slice(0, 21);
         setInitialSeries(first21SeriesAfter2010);
@@ -43,10 +42,7 @@ const Series = () => {
     } else {
       const first21SeriesAfter2010 = data
         .filter(
-          (serie) =>
-            serie.title.toLocaleLowerCase().includes(searchTerm) &&
-            serie.releaseYear >= 2010 &&
-            serie.programType === "series"
+          (serie) => serie.releaseYear >= 2010 && serie.programType === "series"
         )
         .slice(0, 21);
       setInitialSeries(first21SeriesAfter2010);
@@ -63,12 +59,19 @@ const Series = () => {
     const sortedAndSearchSeries = sorting(initialSeries, sortMethod).filter(
       (serie: ISerie) => serie.title.toLocaleLowerCase().includes(searchTerm)
     );
-
-    setDemandedSeries(sortedAndSearchSeries);
-  }, [sortMethod, searchTerm]);
-  console.log(demandedSeries);
-  console.log(initialSeries);
-
+    if (searchTerm.length > 2) {
+      if (sortedAndSearchSeries.length > 0) {
+        setIsNotFound(false);
+        setDemandedSeries(sortedAndSearchSeries);
+      } else {
+        setIsNotFound(true);
+        setDemandedSeries([]);
+      }
+    } else {
+      setIsNotFound(false);
+      setDemandedSeries(initialSeries);
+    }
+  }, [sortMethod, searchTerm, initialSeries]);
   return (
     <>
       <Header />
@@ -80,15 +83,16 @@ const Series = () => {
             sortMethod={sortMethod}
             setSearchTerm={setSearchTerm}
           />
+          {isNotFound && (
+            <h3>{`Could not find any serie matching to ${searchTerm}`}</h3>
+          )}
 
           <div className="seriesList">
             {error && <h1>{error}</h1>}
             {isPending && <h1>Loading...</h1>}
-            {(demandedSeries.length > 0 ? demandedSeries : initialSeries).map(
-              (serie: ISerie, idx: number) => {
-                return <Serie key={idx} serie={serie} />;
-              }
-            )}
+            {demandedSeries.map((serie: ISerie, idx: number) => {
+              return <Serie key={idx} serie={serie} />;
+            })}
           </div>
         </div>
       </main>
