@@ -7,4 +7,11 @@ form > select,
 form > input {
   font-size: 1rem;
   padding: 0.5em;
+  outline: none;
+  border: 1px solid #000;
+}
+
+form > select:focus,
+form > input:focus {
+  outline: 2px solid #000;
 }

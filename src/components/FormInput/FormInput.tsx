@@ -16,6 +16,7 @@ const FormInput: React.FC<IFormInputProps> = ({
     <form action="#">
       <input type="text" onChange={(e) => setSearchTerm(e.target.value)} />
       <select
+        tabIndex={0}
         name="sort"
         id="sort"
         onChange={(e) => setSortMethod(e.target.value)}
